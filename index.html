@@ -1,158 +1,95 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DrawALEX</title>
+    <title>Calculadora de Notas</title>
     <style>
-        /* Estilos del fondo animado y degradado */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            font-family: Arial, sans-serif;
             text-align: center;
-            background: linear-gradient(45deg, #2c3e50, #34495e);
-            background-size: 400% 400%;
-            animation: gradientAnimation 15s ease infinite;
-            color: #fff;
+            margin: 50px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
         }
-
-        /* Animación para el fondo */
-        @keyframes gradientAnimation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        .container {
+            max-width: 320px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
         }
-
-        /* Estilo para el contenedor del nombre */
-        #name-container {
-            font-size: 3.5rem;
-            font-weight: 700;
-            animation: fade-in 1.5s ease-out;
+        .container:hover {
+            transform: scale(1.05);
         }
-
-        /* Animación de desvanecimiento y movimiento */
-        @keyframes fade-in {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        input {
+            margin-top: 10px;
+            padding: 12px;
+            width: 90%;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+            transition: 0.3s;
         }
-
-        /* Animación para cambiar el color del texto de Marius Alexandru Veliscu */
-        @keyframes colorChange {
-            0% { color: #e74c3c; }
-            25% { color: #f39c12; }
-            50% { color: #2ecc71; }
-            75% { color: #3498db; }
-            100% { color: #9b59b6; }
+        input:focus {
+            box-shadow: 0 0 8px #ffffff88;
         }
-
-        /* Estilo para las letras con colores aleatorios */
-        .random-color {
-            animation: colorChange 3s infinite;
+        button {
+            margin-top: 15px;
+            padding: 12px;
+            width: 100%;
+            background: linear-gradient(135deg, #ff758c, #ff7eb3);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
         }
-
-        /* Estilo para la imagen */
-        #image-container {
-            display: none;
+        button:hover {
+            background: linear-gradient(135deg, #ff7eb3, #ff758c);
+            transform: scale(1.05);
+        }
+        h3 {
+            margin-top: 15px;
+            font-size: 18px;
+        }
+        footer {
             margin-top: 20px;
-            opacity: 0; /* Iniciar con opacidad 0 */
-            animation: fade-in-image 1.5s ease-out forwards; /* Animación de desvanecimiento */
-        }
-
-        /* Animación de desvanecimiento de la imagen */
-        @keyframes fade-in-image {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        #image-container img {
-            width: 200px;
-            height: auto;
+            font-size: 14px;
+            opacity: 0.8;
         }
     </style>
 </head>
 <body>
-    <div id="name-container"></div>
-    <div id="image-container">
-        <img src="https://i.pinimg.com/originals/2d/14/75/2d147587377fbed537a9565bf93146a9.gif" alt="GIF de Alejandro Villalva Lora" id="image-alejandro">
-        <img src="https://i.pinimg.com/originals/3b/cb/b1/3bcbb130feb0020c39c37cdf6a3d8a9e.gif" alt="GIF de Jorge Alberto Fuentes Serrano" id="image-jorge">
+    <div class="container">
+        <h2>Calculadora de Notas</h2>
+        <input type="number" id="notaObtenida" placeholder="Nota obtenida" step="any">
+        <input type="number" id="notaMaxima" placeholder="Nota máxima" step="any">
+        <button onclick="calcularNota()">Calcular</button>
+        <h3 id="resultado"></h3>
     </div>
+    
+    <footer>
+        <p>Hecho por Marius Alexandru Veliscu</p>
+    </footer>
+
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const nameContainer = document.getElementById("name-container");
-            const imageContainer = document.getElementById("image-container");
-            const imageAlejandro = document.getElementById("image-alejandro");
-            const imageJorge = document.getElementById("image-jorge");
-            const names = [
-                "Manuel Gabriel Acuña Vázquez", "Adam Amejot García", "Densel Didier Barahona Mejía", 
-                "Raúl Benavente Rossi", "Víctor Catalán Ferreira", "Arcadio Céspedes Hurtado", 
-                "Raúl Cotán Fajardo", "José Luis Fernandez Yagües", "Jorge Alberto Fuentes Serrano", 
-                "Víctor Gil Delgado", "Christian Hidalgo Álvarez", "Antonio Jiménez Muñoz", 
-                "David Juárez Pasquel", "Javier Molina Hernández", "María del Rosario Ortega Serrano", 
-                "Lucía Ríos Miranda", "Víctor Scholl Sánchez", "Diego Segura Cerdera", 
-                "Marius Alexandru Veliscu", "Alejandro Villalba Lora"
-            ];
-            let index = 0;
-
-            function getRandomName() {
-                return names[Math.floor(Math.random() * names.length)];
+        function calcularNota() {
+            let notaObtenida = parseFloat(document.getElementById('notaObtenida').value);
+            let notaMaxima = parseFloat(document.getElementById('notaMaxima').value);
+            
+            if (isNaN(notaObtenida) || isNaN(notaMaxima) || notaMaxima <= 0) {
+                document.getElementById('resultado').textContent = "Ingrese valores válidos.";
+                return;
             }
-
-            function drawLetterByLetter(randomName) {
-                if (index < randomName.length) {
-                    const letter = document.createElement('span');
-                    letter.textContent = randomName[index];
-                    
-                    if (randomName === "Marius Alexandru Veliscu") {
-                        letter.classList.add('random-color');  // Añadir la clase a cada letra individual
-                    }
-
-                    nameContainer.appendChild(letter);  // Agregar la letra al contenedor
-                    index++;
-
-                    // Mostrar el GIF de Alejandro Villalva Lora o Jorge Alberto Fuentes Serrano
-                    if (randomName === "Alejandro Villalba Lora") {
-                        imageAlejandro.style.display = "block";
-                        imageJorge.style.display = "none";
-                    } else if (randomName === "Jorge Alberto Fuentes Serrano") {
-                        imageJorge.style.display = "block";
-                        imageAlejandro.style.display = "none";
-                    } else {
-                        imageAlejandro.style.display = "none";
-                        imageJorge.style.display = "none";
-                    }
-
-                    // Generar un retraso aleatorio entre 50 y 150 ms
-                    const randomDelay = Math.floor(Math.random() * 100) + 50;
-
-                    setTimeout(() => drawLetterByLetter(randomName), randomDelay);
-                } else {
-                    // Después de completar el nombre, reinicia el dibujo
-                    setTimeout(() => {
-                        nameContainer.innerHTML = '';  // Limpiar el contenedor
-                        index = 0;  // Reiniciar el índice
-                        drawLetterByLetter(getRandomName());  // Volver a empezar con un nombre aleatorio
-                    }, 1000);  // Espera 1 segundo antes de reiniciar
-                }
-            }
-
-            // Start drawing the name with a random one
-            drawLetterByLetter(getRandomName());
-        });
+            
+            let notaSobre10 = (notaObtenida / notaMaxima) * 10;
+            document.getElementById('resultado').textContent = `Tu nota sobre 10 es: ${notaSobre10.toFixed(2)}`;
+        }
     </script>
 </body>
 </html>
